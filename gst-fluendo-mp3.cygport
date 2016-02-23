@@ -1,0 +1,42 @@
+inherit gst-plugins
+
+NAME="gst-fluendo-mp3"
+VERSION=0.10.32
+RELEASE=1
+CATEGORY="Audio"
+SUMMARY="GStreamer MP3 plugins"
+DESCRIPTION="GStreamer LibAV plug-in contains a set of elements using the
+LibAV library code. It contains most popular decoders as well as very fast
+colorspace conversion elements."
+HOMEPAGE="http://core.fluendo.com/gstreamer/src/gst-fluendo-mp3"
+SRC_URI="${HOMEPAGE}/gst-fluendo-mp3-${VERSION}.tar.bz2"
+SRC_DIR="gst-fluendo-mp3-${VERSION}"
+PATCH_URI="
+	0.10.32-cygwin-build.patch
+	0.10.32-rank.patch
+"
+
+PKG_NAMES="gstreamer0.10-fluendo-mp3 gstreamer1.0-fluendo-mp3 ${NAME}-common"
+gstreamer0_10_fluendo_mp3_REQUIRES="${NAME}-common"
+gstreamer0_10_fluendo_mp3_CONTENTS="usr/lib/gstreamer-0.10/"
+gstreamer1_0_fluendo_mp3_REQUIRES="${NAME}-common"
+gstreamer1_0_fluendo_mp3_CONTENTS="usr/lib/gstreamer-1.0/"
+gst_fluendo_mp3_common_CONTENTS="usr/share/"
+
+src_compile() {
+	cd ${S}
+	gst_plugins_autoreconf
+	mkdir -p ${B}/gst10
+	cd ${B}/gst10
+	gst_plugins_compile --with-gstreamer-api=1.0
+	mkdir -p ${B}/gst010
+	cd ${B}/gst010
+	gst_plugins_compile --with-gstreamer-api=0.10
+}
+
+src_install() {
+	cd ${B}/gst010
+	cyginstall
+	cd ${B}/gst10
+	cyginstall
+}

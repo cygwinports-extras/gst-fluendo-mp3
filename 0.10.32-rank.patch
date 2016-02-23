@@ -1,0 +1,13 @@
+Unlike mad and mpg123, acmmp3dec is already ranked Primary.
+
+--- origsrc/gst-fluendo-mp3-0.10.32/src/flump3dec.c	2014-10-15 05:02:03.000000000 -0500
++++ src/gst-fluendo-mp3-0.10.32/src/flump3dec.c	2016-02-23 00:20:47.140979100 -0600
+@@ -47,7 +47,7 @@ plugin_init (GstPlugin * plugin)
+ {
+   GST_DEBUG_CATEGORY_INIT (flump3debug, "flump3dec", 0, "Fluendo MP3 Decoder");
+ 
+-  if (!gst_element_register (plugin, "flump3dec", GST_RANK_PRIMARY,
++  if (!gst_element_register (plugin, "flump3dec", GST_RANK_PRIMARY + 1,
+           gst_flump3dec_get_type ()))
+     return FALSE;
+ 
